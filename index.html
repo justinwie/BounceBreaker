@@ -3,10 +3,101 @@
   <head>
     <meta charset="utf-8">
     <title>BounceBreaker</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   </head>
   <body>
+    <div class=mainTitle>
+      BounceBreaker
+    </div>
+
+    <div>
+      <a href="#" class=instructionsLink onClick="toggle('instructions')">menu</a>
+    </div>
+
     <canvas id="myCanvas"></canvas>
+
     <script type="application/javascript" src="./bundle.js"></script>
 
+    <nav class="modal hidden" id="menu">
+      <div>
+        <h2>Welcome!</h2>
+        <br>
+        <br>
+        <ul class=welcomeList>
+          <li><a href="#" onClick="toggle_visibility('instructions')" >Instructions</a></li>
+        <br>
+          <li><a href="#" onClick="hide('menu')" class='play'>Play</a></li>
+        </ul>
+
+      </div>
+    </nav>
+
+    <script type="text/javascript">
+      function toggle_visibility(id) {
+        $(".modal").not("#"+id).hide();
+        $("#" + id).show()
+      }
+      function toggle(id) {
+        $(".modal").not("#"+id).hide();
+        $("#" + id).toggle()
+      }
+
+      function hide(id) {
+        $("#" + id).hide()
+      }
+      function show(id) {
+        $("#" + id).show()
+      }
+    </script>
+
+    <div id="instructions" class="modal hidden">
+      <h2>Welcome!</h2>
+      <ul>Press:
+        <li>- Arrow keys to aim</li>
+        <li>- Spacebar to launch</li>
+      </ul>
+      <br>
+      <p>
+        Destroy the bricks before they march to the bottom.
+      </p>
+      <br>
+      <p>
+        Your power level determines how much you can damage a brick.
+      </p>
+      <br>
+      <img src="assets/plusOne.png" class="icons" />
+      <p class="ballText">
+        Catch the floating green balls to increase your power level.
+      </p>
+      <br>
+      <img src="assets/minusOne.png" class="" />
+      <p class="ballText">
+        Avoid the purple "!" balls, they will lower your level!
+      </p>
+
+      <div class="play">
+        <a href="#" onClick="hide('instructions')" >Play</a>
+      </div>
+    </div>
+
+    <div id="lost" class="lostModal hidden">
+      <h2>You Lost!</h2>
+      <div class="lost">
+        <a href="#" onClick="document.location.reload()" >Play Again</a>
+      </div>
+    </div>
+
+
+
+
+    <div class='links' group>
+      <a href="https://github.com/justinwie" ><img src="assets/github.png"/></a>
+      <!-- <a href="www.justinwie.com" class='Name'>Justin Wie</a> -->
+      <a href="linkedin.com/in/justinwie" ><img src="assets/linkedin.png"/></a>
+    </div>
+
+
   </body>
+
 </html>
