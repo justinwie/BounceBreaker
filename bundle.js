@@ -290,6 +290,13 @@
 	          if ((ballLevel <= 0)) {
 	            ctx.fillStyle = "darkgrey";
 	          }
+	          else if (existingBricks[i][j].y >= (canvas.height-(brickHeight*3)) ) {
+	            if (Math.random() > 0.7) {
+	              ctx.fillStyle = "#000000";
+	            }else {
+	              ctx.fillStyle = "#30302e";
+	            }
+	          }
 	          else if (existingBricks[i][j].power - ballLevel >= 5) {
 	            ctx.fillStyle = "#48b2ff";
 	          }
