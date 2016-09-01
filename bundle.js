@@ -82,6 +82,7 @@
 	  var spacePressed = false;
 	
 	  let startRound = 0;
+	  var brokenBricks = 0
 	
 	  var brickRowCount = 1;
 	  var brickColumnCount = 6;
@@ -93,6 +94,19 @@
 	
 	  var minNewBricks = 4;
 	  var maxNewBricks = 6;
+	
+	  // var img = new Image();
+	  // img.onload=start;
+	  // img.src="https://dl.dropboxusercontent.com/u/139992952/multple/checkerboard.jpg";
+	  // function start(){
+	  //   var pattern=ctx.createPattern(img,'repeat');
+	  //   ctx.beginPath();
+	  //   ctx.arc(50,50,15,0,Math.PI*2);
+	  //   ctx.closePath();
+	  //   ctx.fillStyle=pattern;
+	  //   ctx.fill();
+	  //   ctx.stroke();
+	  // };
 	
 	  let ballLevel = 1;
 	
@@ -204,7 +218,6 @@
 	            // bottom
 	            dy = -dy;
 	            existingBrick.power -= ballLevel;
-	
 	          }
 	          else if((y+(2*ballRadius) >= (existingBrick.y)) && (y+(2*ballRadius) < existingBrick.y+brickHeight) && (x >= existingBrick.x) && (x+(2*ballRadius) <= (existingBrick.x + brickWidth))){
 	            dy = -dy;
@@ -284,6 +297,7 @@
 	    for(i = 0; i < existingBricks.length; i++) {
 	      for(j = 0; j < existingBricks[i].length; j++) {
 	        if(existingBricks[i][j].power > 0){
+	
 	          ctx.beginPath();
 	          ctx.rect(existingBricks[i][j].x, existingBricks[i][j].y, brickWidth, brickHeight);
 	
@@ -319,22 +333,23 @@
 	          ctx.fillStyle = "White";
 	          ctx.fillText(existingBricks[i][j].power, existingBricks[i][j].x+brickWidth/2-brickPadding*fontAdjust, existingBricks[i][j].y+brickPadding*2+brickHeight/2);
 	        }
+	
 	      }
 	    }
 	  }
-	  //
-	  // function drawScore(){
-	  //   ctx.font = "16px Helvetica";
-	  //   ctx.fillStyle = "#0095DD";
-	  //   ctx.fillText("Score: "+score, 8, 20);
-	  // }
+	
+	  function drawBrokenBricks(){
+	    ctx.font = "16px Helvetica";
+	    ctx.fillStyle = "#0095DD";
+	    ctx.fillText("Bricks: "+brokenBricks, canvas.width - 115, canvas.height - 10);
+	  }
 	
 	  function createPowerBall(){
 	    if (powerCounter < round-1) {
 	      randX = Math.floor(Math.random() * (rightBorder - leftBorder + 1)) + leftBorder;
 	      randY = Math.floor(Math.random() * (topBorder - bottomBorder + 1)) + bottomBorder;
 	
-	      powerBall = { x: randX, y: randY, hit: 0, power: 1, radius: 12, speed: 1 }
+	      powerBall = { x: randX, y: randY, hit: 0, power: 1, radius: 14, speed: 1 }
 	
 	      powerBalls.push(powerBall)
 	
@@ -344,7 +359,7 @@
 	        if (Math.random()>1) {
 	          powerBall = { x: randX, y: randY, hit: 0, power: +2, radius: 12, speed: 1 }
 	        }else {
-	          powerBall = { x: randX, y: randY, hit: 0, power: -1, radius: 15, speed: 1  }
+	          powerBall = { x: randX, y: randY, hit: 0, power: -1, radius: 14, speed: 1  }
 	        }
 	        powerBalls.push(powerBall)
 	      }
@@ -356,10 +371,9 @@
 	    for(i = 0; i < powerBalls.length; i++) {
 	      let powerBall = powerBalls[i];
 	      if (powerBall.hit === 0) {
-	        let powerBallColor = powerBall.power === 1 ? "#bedc27" : "#dc27be"
-	        if (powerBall.power > 1) powerBallColor = "Black"
-	        let powerBallText = (powerBall.power >= 0) ? "+" : " !"
-	        let powerBallFont = (powerBall.power === -1) ? "18px" : "18px"
+	        let powerBallColor = powerBall.power === 1 ? "#bedc27" : "black"
+	        let powerBallText = (powerBall.power >= 0) ? "+" : "x"
+	        let powerBallFont = (powerBall.power === -1) ? "16px" : "16px"
 	
 	        ctx.beginPath();
 	        ctx.arc(powerBall.x, powerBall.y, powerBall.radius, 0, Math.PI*2);
@@ -369,7 +383,7 @@
 	
 	        ctx.font = powerBallFont + " Helvetica";
 	        ctx.fillStyle = "White";
-	        ctx.fillText(powerBallText, powerBall.x-powerBall.radius/2, powerBall.y+powerBall.radius/2);
+	        ctx.fillText(powerBallText, powerBall.x-powerBall.radius/3, powerBall.y+powerBall.radius/3);
 	      }
 	    }
 	  }
@@ -413,7 +427,7 @@
 	
 	    drawRound();
 	    drawBall();
-	    drawPowerLevel()
+	    drawPowerLevel();
 	
 	
 	    collisionDetection();
@@ -462,38 +476,41 @@
 	      }
 	    }
 	
-	    if (rightPressed && startRound === 0) {
+	    if (rightPressed && startRound === 0 ) {
 	      if (lineX < canvas.width) {
 	        if (lineY === 0) {
-	          lineX += 25
+	          lineX += 20
 	        }
 	        else{
-	          lineY -= 25
+	          lineY -= 20
 	        }
 	      }
-	      else {
-	        lineY += 25;
+	      else if(lineY<canvas.height*.80){
+	        lineY += 20;
 	      }
 	
 	      dx = (lineX - x)/(y - lineY) * speedScale;
 	      dy = -1 * speedScale;
+	
+	
 	    }
 	
 	    else if (leftPressed && startRound === 0) {
 	      if (lineX > 0) {
 	        if (lineY != 0) {
-	          lineY -= 25
+	          lineY -= 20
 	        }
 	        else {
-	          lineX -= 25
+	          lineX -= 20
 	        }
 	      }
-	      else {
-	        lineY += 25
+	      else if(lineY<canvas.height*.80){
+	        lineY += 20
 	      }
 	
 	      dx = (lineX - x)/(y - lineY) * speedScale;
 	      dy = -1 * speedScale;
+	
 	    }
 	
 	    if (spacePressed) {
@@ -505,7 +522,6 @@
 	    draw();
 	    requestAnimationFrame(game);
 	  }
-	
 	  createInitialBricks()
 	  game();
 	});
