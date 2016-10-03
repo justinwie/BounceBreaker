@@ -1,5 +1,5 @@
 [screenshot]: /Screenshot_2.png
-[gif]: /BounceBreaker_GIF.gif
+[gif]: assets/BounceBreaker_GIF.gif
 
 # BounceBreaker
 
